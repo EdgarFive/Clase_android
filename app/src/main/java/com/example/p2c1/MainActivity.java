@@ -3,7 +3,9 @@ package com.example.p2c1;
 import android.annotation.SuppressLint;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,6 +18,62 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.p2c1.BaseDatos.DbHelper;
 
 public class MainActivity extends AppCompatActivity {
+
+    private EditText txtNombre, txtTelefono, txtEmail;
+    private Button btnGuardar;
+    private DbHelper databaseHelper;
+
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_nuevo); //quí vinculamos el ativity que acabamos de hacer. ========
+
+        //Inicializamos los campos de texto y el boton ==============
+        txtNombre = findViewById(R.id.txtNombre);
+        txtTelefono = findViewById(R.id.txtTelefono);
+        txtEmail = findViewById(R.id.txtEmail);
+        btnGuardar = findViewById(R.id.btnGuardar);
+
+        databaseHelper = new DbHelper(this);
+
+        //Configuramos el evento click del boton ===================
+        btnGuardar.setOnClickListener( v -> {
+            String nombre = txtNombre.getText().toString().trim();
+            String telefono = txtTelefono.getText().toString().trim();
+            String email = txtEmail.getText().toString().trim();
+
+            //Vemos que los campos no estén vacios ==========================
+            if( TextUtils.isEmpty(nombre) || TextUtils.isEmpty(telefono) ||TextUtils.isEmpty(email) ){
+                Toast.makeText(MainActivity.this, "Por favor, debe llenar todos los campos.", Toast.LENGTH_SHORT).show();
+            }else{
+                //Guardamos los datos mamalones ==========
+                databaseHelper.addContact(nombre,telefono,email);
+                Toast.makeText(MainActivity.this, "Datos guardados correctamente.", Toast.LENGTH_SHORT).show();
+
+                //Vamos a limpiar los campos porque no somos unos marranos. =====================
+
+                txtNombre.setText("");
+                txtTelefono.setText("");
+                txtEmail.setText("");
+            }
+
+
+        });
+
+
+    }
+
+
+
+
+
+
+
+    //=========================================================================================================================================================
+    //=========================================================================================================================================================
+    //=========================================================================================================================================================
+
+    /*
+
 
     Button bntSaludo,btnCrearDb;
     TextView txtSaludo;
@@ -41,6 +99,7 @@ public class MainActivity extends AppCompatActivity {
             txtSaludo.setText("Crando base de Datos");
 
              */
+    /*
 
             DbHelper dbHelper = new DbHelper(this);
             dbHelper.getWritableDatabase();
@@ -69,4 +128,8 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
     }
+
+     */
+
+
 }
